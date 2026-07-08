@@ -1,42 +1,74 @@
 from flask import Flask, render_template, request
 import joblib
 import numpy as np
+import os
 
+# Create Flask app
 app = Flask(__name__)
 
-# Load trained model
-model = joblib.load("temperature_prediction_model.pkl")
+# ----------------------------------
+# Load Machine Learning Model
+# ----------------------------------
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+model_path = os.path.join(
+    BASE_DIR,
+    "decision_tree_model.pkl"
+)
+
+model = joblib.load(model_path)
+
+print("Model Loaded Successfully")
 
 
-@app.route('/')
+# ----------------------------------
+# Home Page
+# ----------------------------------
+
+@app.route("/")
 def home():
     return render_template("index.html")
 
 
-@app.route('/predict', methods=['POST'])
+# ----------------------------------
+# Prediction
+# ----------------------------------
+
+@app.route("/predict", methods=["POST"])
 def predict():
 
-    humidity = float(request.form['humidity'])
-    pressure = float(request.form['pressure'])
-    wind_speed = float(request.form['wind_speed'])
-    visibility = float(request.form['visibility'])
-    cloud_cover = float(request.form['cloud_cover'])
-    dew_point = float(request.form['dew_point'])
+    try:
+        # Get input values from HTML form
+        input_values = []
 
-    features = np.array([[humidity,
-                          pressure,
-                          wind_speed,
-                          visibility,
-                          cloud_cover,
-                          dew_point]])
+        for value in request.form.values():
+            input_values.append(float(value))
 
-    prediction = model.predict(features)[0]
+        # Convert to numpy array
+        final_input = np.array([input_values])
 
-    return render_template(
-        "result.html",
-        prediction=round(prediction,2)
-    )
+        # Predict temperature
+        prediction = model.predict(final_input)
 
+        result = round(prediction[0], 2)
+
+        return render_template(
+            "result.html",
+            prediction=result
+        )
+
+    except Exception as e:
+
+        return render_template(
+            "result.html",
+            prediction="Error: " + str(e)
+        )
+
+
+# ----------------------------------
+# Run Flask Application
+# ----------------------------------
 
 if __name__ == "__main__":
     app.run(debug=True)

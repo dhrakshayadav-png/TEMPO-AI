@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Temperature Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Temperature Prediction</h1>
+
+<form action="/predict" method="POST">
+
+<input type="number" name="Day" placeholder="Enter Day" required>
+
+<input type="number" name="Month" placeholder="Enter Month" required>
+
+<input type="number" name="Year" placeholder="Enter Year" required>
+
+<input type="number" name="Hour" placeholder="Enter Hour (0-23)" required>
+
+
+<input type="number" step="any" name="Humidity"
+placeholder="Enter Humidity %" required>
+
+
+<input type="number" step="any" name="WindSpeed"
+placeholder="Enter Wind Speed" required>
+
+
+<input type="number" step="any" name="Pressure"
+placeholder="Enter Pressure" required>
+
+
+<input type="number" step="any" name="Rainfall"
+placeholder="Enter Rainfall" required>
+
+
+<button type="submit">
+Predict Temperature
+</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

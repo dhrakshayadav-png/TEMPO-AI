@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Prediction Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Prediction Result</h1>
+
+    <div class="result">
+        {{ prediction }} °C
+    </div>
+
+    <p>Estimated temperature using Decision Tree ML Model</p>
+
+    <a href="/">
+        <button>Predict Again</button>
+    </a>
+
+</div>
+
+</body>
+
+</html>
